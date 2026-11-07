@@ -154,7 +154,9 @@ document.querySelector("#clearLocalArticles")?.addEventListener("click",()=>{if(
 const ideaForm=document.querySelector("#ideaForm");
 ideaForm?.addEventListener("submit",event=>{event.preventDefault();const input=document.querySelector("#ideaInput");const msg=document.querySelector("#ideaMessage");const idea=input.value.trim();if(!idea)return;try{const ideas=JSON.parse(localStorage.getItem("nexus-ideas-v1")||"[]");ideas.push({idea,createdAt:new Date().toISOString()});localStorage.setItem("nexus-ideas-v1",JSON.stringify(ideas));msg.textContent="Sugerencia guardada en este navegador. Aún no se ha enviado al equipo NEXUS.";msg.classList.add("success-message");input.value=""}catch{msg.textContent="No se pudo guardar la sugerencia en este navegador."}});
 renderAllArticles();
-\n\n// NEXUS AI catalog assistant. Set this after deploying the Cloudflare Worker.
+
+
+// NEXUS AI catalog assistant. Set this after deploying the Cloudflare Worker.
 const NEXUS_AI_ENDPOINT = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
 const aiLauncher = document.querySelector("#nexusAiLauncher");
 const aiPanel = document.querySelector("#nexusAiPanel");
