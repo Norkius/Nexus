@@ -156,14 +156,15 @@ ideaForm?.addEventListener("submit",event=>{event.preventDefault();const input=d
 renderAllArticles();
 
 
-// NEXUS AI catalog assistant. Set this after deploying the Cloudflare Worker.
-const NEXUS_AI_ENDPOINT = ""; // Pega aquí la URL del Worker cuando esté desplegado.
+// NEXUS local assistant: searches the published catalog and this browser's local articles.
 const aiLauncher = document.querySelector("#nexusAiLauncher");
 const aiPanel = document.querySelector("#nexusAiPanel");
 const aiClose = document.querySelector("#nexusAiClose");
 const aiForm = document.querySelector("#nexusAiForm");
 const aiInput = document.querySelector("#nexusAiInput");
 const aiMessages = document.querySelector("#nexusAiMessages");
+let nexusCatalogCache = null;
+
 function setAiOpen(open) {
   if (!aiPanel || !aiLauncher) return;
   aiPanel.hidden = !open;
@@ -179,6 +180,80 @@ function addAiMessage(text, role) {
   aiMessages.scrollTop = aiMessages.scrollHeight;
   return node;
 }
+function normalizeAiText(value) {
+  return String(value || "").toLocaleLowerCase("es")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9ñ\s-]/g, " ").replace(/\s+/g, " ").trim();
+}
+async function getNexusCatalog() {
+  if (nexusCatalogCache) return nexusCatalogCache;
+  const response = await fetch("catalog.json", { headers: { "Accept": "application/json" }, cache: "no-cache" });
+  if (!response.ok) throw new Error("No pude cargar el catálogo publicado. Comprueba tu conexión e inténtalo otra vez.");
+  const data = await response.json();
+  nexusCatalogCache = Array.isArray(data.items) ? data.items : [];
+  return nexusCatalogCache;
+}
+function getBrowserArticles() {
+  try {
+    const items = JSON.parse(localStorage.getItem("nexus-local-articles-v1") || "[]");
+    return Array.isArray(items) ? items.map(item => ({
+      id: item.id, type: "artículo local", title: item.title,
+      category: item.category, summary: item.summary, content: item.body,
+      url: "#explorar", local: true
+    })) : [];
+  } catch { return []; }
+}
+function getAiSectionHint(item) {
+  const url = item.url || "";
+  if (url.includes("academy")) return "Academy";
+  if (url.includes("lab")) return "NEXUS Lab";
+  if (url.includes("community")) return "Comunidad";
+  return item.local ? "artículo guardado en este navegador" : "Explorar";
+}
+function searchNexusContent(question, items) {
+  const stop = new Set(["que","como","para","por","con","una","uno","los","las","del","por","hay","puedo","quiero","sobre","dame","algo","este","esta","recomienda","contenido","articulo"]);
+  const words = normalizeAiText(question).split(" ").filter(word => word.length > 2 && !stop.has(word));
+  return items.map(item => {
+    const title = normalizeAiText(item.title);
+    const text = normalizeAiText([item.type,item.category,item.title,item.summary,item.content].join(" "));
+    let score = 0;
+    for (const word of words) {
+      if (title.includes(word)) score += 4;
+      else if (text.includes(word)) score += 1;
+    }
+    return { item, score };
+  }).filter(result => result.score > 0).sort((a,b) => b.score-a.score).slice(0,3);
+}
+function localNexusAnswer(question, items) {
+  const q = normalizeAiText(question);
+  if (/^(hola|holi|buenas|buenos dias|buenas tardes|buenas noches)(\s|$)/.test(q))
+    return "Hola. Soy el asistente local de NEXUS. Puedo orientarte por la web y encontrar artículos, tutoriales, proyectos y recursos del catálogo.";
+  if (/(que puedes hacer|como me ayudas|ayuda|como funciona)/.test(q))
+    return "Puedo ayudarte a ubicar las secciones, buscar contenidos del catálogo y recomendarte lecturas. Este modo funciona sin una API externa; no genera respuestas abiertas como un modelo de IA.";
+  if (/(donde|como encuentro|ir a|seccion|apartado|navegar)/.test(q)) {
+    if (/(articulo|articulos|contenido|explorar|catalogo)/.test(q)) return "Para consultar artículos y contenidos, entra en la sección Explorar.";
+    if (/(curso|tutorial|aprender|academy|academia)/.test(q)) return "Para aprender con tutoriales y contenidos formativos, entra en Academy.";
+    if (/(proyecto|laboratorio|crear|lab)/.test(q)) return "Para descubrir proyectos e ideas tecnológicas, entra en NEXUS Lab.";
+    if (/(comunidad|sugerencia|idea)/.test(q)) return "La sección Comunidad es el espacio para participar y compartir sugerencias.";
+    return "Puedes navegar por Inicio, Explorar, NEXUS Lab, Academy y Comunidad desde el menú principal.";
+  }
+  if (/(que hay en nexus|que ofrece nexus|que puedo encontrar|recomiend|por donde empiezo)/.test(q)) {
+    const picks = items.slice(0,3);
+    if (!picks.length) return "El catálogo todavía no tiene contenidos disponibles.";
+    return "Puedes empezar por estos contenidos:\n" + picks.map((item,i) => (i+1)+". "+item.title+" — "+getAiSectionHint(item)+".").join("\n") + "\n\nDime un tema concreto si buscas algo específico.";
+  }
+  const matches = searchNexusContent(question, items);
+  if (matches.length) {
+    const best = matches[0].score;
+    const relevant = matches.filter(result => result.score >= Math.max(1,best-1));
+    return "Encontré estos contenidos relacionados:\n" + relevant.map(({item}) =>
+      "• "+item.title+" ("+getAiSectionHint(item)+")\n  "+(item.summary || item.content || "Contenido del catálogo.")
+    ).join("\n\n") + "\n\nPuedes buscar por otro tema o pedirme que te indique en qué sección está.";
+  }
+  if (/(inteligencia artificial| ia |programacion|javascript|html|css|videojuego|tecnologia|computador)/.test(" "+q+" "))
+    return "Puedo localizar contenidos de ese tema si están en el catálogo, pero el modo local no tiene un modelo de IA para responder preguntas generales. Prueba con palabras clave o revisa Explorar, Academy y NEXUS Lab.";
+  return "No encontré ese tema en el catálogo de NEXUS. Prueba con palabras clave más concretas, como inteligencia artificial, programación, ciudades inteligentes o espacio. También puedo ayudarte a ubicar las secciones.";
+}
 aiLauncher?.addEventListener("click", () => setAiOpen(aiPanel?.hidden));
 aiClose?.addEventListener("click", () => setAiOpen(false));
 document.querySelectorAll("[data-ai-prompt]").forEach(button => button.addEventListener("click", () => {
@@ -190,22 +265,16 @@ aiForm?.addEventListener("submit", async event => {
   if (!question) return;
   addAiMessage(question, "user");
   aiInput.value = "";
-  const pending = addAiMessage("Estoy consultando el catálogo...", "assistant pending");
+  const pending = addAiMessage("Buscando en el catálogo de NEXUS...", "assistant pending");
   const sendButton = aiForm.querySelector("button");
   if (sendButton) sendButton.disabled = true;
   try {
-    if (!NEXUS_AI_ENDPOINT) throw new Error("El asistente está diseñado, pero falta conectar su servicio seguro. Configura NEXUS_AI_ENDPOINT después de desplegar el backend.");
-    const response = await fetch(NEXUS_AI_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question })
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "No se pudo consultar NEXUS AI. Inténtalo de nuevo.");
-    if (pending) pending.textContent = data.answer || "No recibí una respuesta válida.";
+    const [catalog] = await Promise.all([getNexusCatalog()]);
+    const items = [...getBrowserArticles(), ...catalog];
+    if (pending) pending.textContent = localNexusAnswer(question, items);
     if (pending) pending.classList.remove("pending");
   } catch (error) {
-    if (pending) { pending.textContent = error.message || "Ocurrió un error al conectar con NEXUS AI."; pending.classList.remove("pending"); pending.classList.add("error"); }
+    if (pending) { pending.textContent = error.message || "No se pudo consultar el catálogo."; pending.classList.remove("pending"); pending.classList.add("error"); }
   } finally {
     if (sendButton) sendButton.disabled = false;
     aiInput?.focus();
