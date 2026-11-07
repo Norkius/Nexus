@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-07",
+  "description": "Catálogo público de contenidos oficiales de NEXUS. Añade aquí cada nuevo artículo, tutorial o proyecto publicado.",
+  "items": [
+    {
+      "id": "ai",
+      "type": "articulo",
+      "title": "La inteligencia artificial está cambiando la forma de crear.",
+      "category": "Tecnología",
+      "summary": "Cómo la IA transforma el aprendizaje, el trabajo, la ciencia y la creatividad, junto con sus retos de privacidad y uso responsable.",
+      "content": "La inteligencia artificial permite que los sistemas informáticos realicen tareas como reconocer patrones, comprender lenguaje o generar contenido. En educación puede explicar conceptos y proponer ejercicios; en diseño ayuda a explorar ideas y en ciencia permite analizar datos. También presenta retos de privacidad, errores y sesgos. La IA no reemplaza el criterio humano: funciona mejor junto con pensamiento crítico.",
+      "url": "#explorar"
+    },
+    {
+      "id": "cities",
+      "type": "articulo",
+      "title": "Ciudades inteligentes: vivir mejor con tecnología.",
+      "category": "Innovación",
+      "summary": "Cómo los datos, sensores y redes pueden mejorar servicios urbanos de forma accesible y sostenible.",
+      "content": "Una ciudad inteligente utiliza información y herramientas digitales para gestionar recursos y responder a necesidades. Sensores y plataformas pueden ayudar con tráfico, alumbrado y servicios. No se define por tener más dispositivos, sino por ser accesible, segura y sostenible, con participación comunitaria y protección de datos.",
+      "url": "#explorar"
+    },
+    {
+      "id": "space",
+      "type": "articulo",
+      "title": "Mirar al espacio también es mirar hacia el futuro.",
+      "category": "Ciencia",
+      "summary": "La exploración espacial impulsa conocimiento y tecnologías que también tienen aplicaciones en la Tierra.",
+      "content": "Los satélites permiten observar el clima y facilitar comunicaciones. Las misiones científicas ayudan a comprender planetas y el universo. La investigación espacial impulsa avances en materiales, energía, robótica y comunicación que pueden adaptarse a problemas terrestres.",
+      "url": "#explorar"
+    },
+    {
+      "id": "web-basics",
+      "type": "tutorial",
+      "title": "Fundamentos de la web",
+      "category": "Programación",
+      "summary": "Introducción a HTML, CSS y JavaScript y a cómo se construye una página web.",
+      "content": "HTML organiza el contenido, CSS define su presentación y JavaScript añade interactividad. Son los fundamentos para crear sitios web.",
+      "url": "#academy"
+    },
+    {
+      "id": "computational-thinking",
+      "type": "tutorial",
+      "title": "Pensamiento computacional",
+      "category": "Aprendizaje",
+      "summary": "Descomponer problemas y diseñar soluciones paso a paso.",
+      "content": "El pensamiento computacional consiste en dividir un problema, reconocer patrones, abstraer lo importante y diseñar pasos claros para resolverlo.",
+      "url": "#academy"
+    },
+    {
+      "id": "responsible-ai",
+      "type": "tutorial",
+      "title": "Uso responsable de IA",
+      "category": "Tecnología",
+      "summary": "Verificar resultados, proteger datos y utilizar asistentes con criterio.",
+      "content": "Comprueba datos importantes con fuentes fiables, no compartas información privada y recuerda que los asistentes pueden equivocarse.",
+      "url": "#academy"
+    },
+    {
+      "id": "digital-projects",
+      "type": "proyecto",
+      "title": "Proyectos digitales",
+      "category": "NEXUS Lab",
+      "summary": "Ideas de programación, diseño web y desarrollo de productos digitales.",
+      "content": "Espacio de NEXUS Lab para explorar proyectos de programación, diseño web y productos digitales.",
+      "url": "#lab"
+    },
+    {
+      "id": "useful-tools",
+      "type": "recurso",
+      "title": "Herramientas útiles",
+      "category": "NEXUS Lab",
+      "summary": "Recursos y aplicaciones para estudiar, crear y trabajar con tecnología.",
+      "content": "Selección de recursos digitales para estudiar, crear y trabajar mejor con tecnología.",
+      "url": "#lab"
+    }
+  ]
+}
