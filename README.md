@@ -34,3 +34,18 @@ Para convertirlo en un CMS real con cuentas y contenido compartido será necesar
 ## Ejecutar localmente
 
 Abre `index.html` en un navegador moderno. No requiere instalación.
+
+
+## NEXUS AI (nuevo)
+
+Se añadió la interfaz del asistente y un backend independiente para Cloudflare Workers. El backend obtiene el catálogo público desde `catalog.json` en cada consulta (con caché corta), de modo que los cambios publicados en ese archivo se incorporan sin editar el código del asistente. La clave de OpenAI debe guardarse como secreto del Worker; nunca debe ponerse en `app.js` ni en archivos públicos.
+
+### Activación pendiente
+
+1. Desplegar la carpeta `nexus-ai-worker` como un Cloudflare Worker.
+2. Configurar el secreto `OPENAI_API_KEY` en el Worker (no compartirlo ni subirlo a GitHub).
+3. Configurar el origen permitido en `nexus-ai-worker/src/index.js` si cambia el dominio público.
+4. Copiar la URL pública del Worker y asignarla a `window.NEXUS_AI_ENDPOINT` en `app.js`.
+5. Publicar un artículo nuevo añadiendo un objeto a `catalog.json` y desplegar GitHub Pages. El asistente leerá el catálogo actualizado automáticamente.
+
+El panel de gestión actual sigue guardando borradores solo en el navegador. No publica contenido en el catálogo compartido; para publicar, edita `catalog.json` desde GitHub. El asistente no se activa hasta configurar y desplegar el Worker y añadir el secreto. Puede haber costes por uso de la API; establece límites y supervisa el consumo antes de compartirlo ampliamente.
