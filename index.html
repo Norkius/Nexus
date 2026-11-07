@@ -25,13 +25,16 @@
       <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
         <a class="nav-link active" href="#inicio">Inicio</a>
         <a class="nav-link" href="#explorar">Explorar</a>
+        <a class="nav-link" href="#lab">Lab</a>
+        <a class="nav-link" href="#academy">Academy</a>
+        <a class="nav-link" href="#community">Comunidad</a>
         <a class="nav-link" href="#sobre">Sobre NEXUS</a>
       </nav>
       <div class="header-actions">
         <button class="icon-button" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.64 5.64l1.42 1.42m9.88 9.88 1.42 1.42m0-12.72-1.42 1.42m-9.88 9.88-1.42 1.42"/><circle cx="12" cy="12" r="4"/></svg>
         </button>
-        <a class="header-cta" href="#explorar">Descubrir <span>↗</span></a>
+        <button class="header-cta admin-trigger" id="adminOpen">Panel de gestión <span>↗</span></button>
       </div>
     </header>
 
@@ -97,9 +100,31 @@
           </article>
         </div>
         <p class="empty-state" id="emptyState" hidden>No encontramos resultados. Prueba con otra búsqueda.</p>
+        <div class="content-status" id="contentStatus" aria-live="polite"></div>
       </section>
 
-      <section class="manifesto section-pad" id="sobre">
+
+      <section class="platform-section section-pad" id="lab">
+        <div class="section-heading"><div><div class="eyebrow muted-eyebrow">02 / NEXUS LAB</div><h2>Experimenta.<br><span>Construye.</span></h2></div><p>Un espacio para proyectos, prototipos y herramientas que convierten la curiosidad en soluciones.</p></div>
+        <div class="module-grid">
+          <article class="module-card"><span class="module-number">LAB / 01</span><div class="module-symbol">⌘</div><h3>Proyectos digitales</h3><p>Ideas de programación, diseño web y desarrollo de productos digitales.</p><span class="module-tag">APRENDER HACIENDO</span></article>
+          <article class="module-card"><span class="module-number">LAB / 02</span><div class="module-symbol">◈</div><h3>Herramientas útiles</h3><p>Recursos y aplicaciones para estudiar, crear y trabajar mejor con tecnología.</p><span class="module-tag">RECURSOS</span></article>
+          <article class="module-card"><span class="module-number">LAB / 03</span><div class="module-symbol">⌁</div><h3>Ideas en prueba</h3><p>Prototipos y experimentos explicados paso a paso, con sus aciertos y límites.</p><span class="module-tag">EN DESARROLLO</span></article>
+        </div>
+      </section>
+      <section class="platform-section academy-section section-pad" id="academy">
+        <div class="section-heading"><div><div class="eyebrow muted-eyebrow">03 / NEXUS ACADEMY</div><h2>Aprende algo.<br><span>Cada día.</span></h2></div><p>Rutas cortas y prácticas para desarrollar habilidades digitales desde cero.</p></div>
+        <div class="learning-list">
+          <article><span class="lesson-index">01</span><div><h3>Fundamentos de la web</h3><p>HTML, CSS y JavaScript: cómo se construye una página.</p></div><span class="lesson-level">INICIAL</span></article>
+          <article><span class="lesson-index">02</span><div><h3>Pensamiento computacional</h3><p>Descomponer problemas y diseñar soluciones paso a paso.</p></div><span class="lesson-level">INICIAL</span></article>
+          <article><span class="lesson-index">03</span><div><h3>Uso responsable de IA</h3><p>Verificar resultados, proteger datos y utilizar asistentes con criterio.</p></div><span class="lesson-level">INICIAL</span></article>
+        </div>
+      </section>
+      <section class="community-section section-pad" id="community">
+        <div class="community-copy"><div class="eyebrow">04 / NEXUS COMMUNITY</div><h2>Las ideas crecen<br>cuando se <span>comparten.</span></h2><p>Propón un tema para próximos artículos o tutoriales. Esta versión guarda las sugerencias únicamente en este navegador; todavía no las envía a NEXUS.</p></div>
+        <form class="idea-form" id="ideaForm"><label for="ideaInput">¿Qué te gustaría explorar?</label><textarea id="ideaInput" maxlength="240" rows="3" placeholder="Ej. Cómo crear mi primer videojuego..." required></textarea><button class="button button-primary" type="submit">Guardar sugerencia <span>↗</span></button><p class="form-message" id="ideaMessage">No incluyas datos personales. La sugerencia se guarda solo en este dispositivo.</p></form>
+      </section>
+\n      <section class="manifesto section-pad" id="sobre">
         <div class="manifesto-mark">N<span>.</span></div>
         <div class="manifesto-copy"><div class="eyebrow">02 / NUESTRA IDEA</div><h2>La tecnología conecta.<br><span>Las ideas transforman.</span></h2><p>NEXUS nace para acercar el conocimiento tecnológico a todos. Sin complicaciones: información clara, curiosidad y una mirada puesta en lo que viene.</p><a class="button button-outline" href="mailto:hola@nexus.example">Hablemos <span>↗</span></a></div>
         <div class="manifesto-side"><span>UNA IDEA</span><span class="side-line"></span><span>UN MUNDO DE POSIBILIDADES</span></div>
@@ -114,6 +139,6 @@
     <footer class="site-footer"><a class="brand" href="#inicio"><span class="brand-mark"><span></span><span></span><span></span></span><span>NEXUS<span class="brand-dot">.</span></span></a><p>Conectando ideas, creando futuro.</p><span class="footer-copy">© <span id="year"></span> NEXUS. Hecho para explorar.</span></footer>
   </div>
 
-  <dialog class="article-dialog" id="articleDialog"><button class="dialog-close" id="dialogClose" aria-label="Cerrar">×</button><div class="dialog-content"><div class="eyebrow" id="dialogCategory">NEXUS / LECTURA</div><h2 id="dialogTitle"></h2><p id="dialogLead" class="dialog-lead"></p><div id="dialogText" class="dialog-text"></div><div class="dialog-foot">NEXUS <span>— CONECTANDO IDEAS, CREANDO FUTURO</span></div></div></dialog>
+  <dialog class="admin-dialog" id="adminDialog"><button class="dialog-close" id="adminClose" aria-label="Cerrar">×</button><div class="dialog-content"><div class="eyebrow">NEXUS / GESTIÓN LOCAL</div><h2>Panel de contenido</h2><p class="dialog-lead">Crea artículos que aparecerán en esta página desde este navegador.</p><div class="admin-warning">Este panel no tiene inicio de sesión ni base de datos. Los cambios se guardan solo en este dispositivo y no son visibles para otros visitantes.</div><form id="articleForm" class="admin-form"><label for="newTitle">Título</label><input id="newTitle" maxlength="90" required placeholder="Título del artículo"><label for="newCategory">Categoría</label><select id="newCategory"><option>Tecnología</option><option>Innovación</option><option>Ciencia</option></select><label for="newSummary">Resumen</label><textarea id="newSummary" maxlength="220" rows="3" required placeholder="Resumen breve"></textarea><label for="newBody">Contenido</label><textarea id="newBody" maxlength="4000" rows="6" required placeholder="Escribe el artículo..."></textarea><button class="button button-primary" type="submit">Guardar artículo local</button></form><div class="admin-existing"><h3>Artículos creados en este navegador</h3><div id="localArticleList"></div><button class="text-link" id="clearLocalArticles" type="button">Eliminar artículos locales</button></div></div></dialog>\n  <dialog class="article-dialog" id="articleDialog"><button class="dialog-close" id="dialogClose" aria-label="Cerrar">×</button><div class="dialog-content"><div class="eyebrow" id="dialogCategory">NEXUS / LECTURA</div><h2 id="dialogTitle"></h2><p id="dialogLead" class="dialog-lead"></p><div id="dialogText" class="dialog-text"></div><div class="dialog-foot">NEXUS <span>— CONECTANDO IDEAS, CREANDO FUTURO</span></div></div></dialog>
 </body>
 </html>
