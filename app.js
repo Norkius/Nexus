@@ -141,7 +141,9 @@ function openLocalArticle(item){
   const target=document.querySelector("#dialogText");target.replaceChildren(...item.body.split(/\\n\\s*\\n/).filter(Boolean).map(text=>{const p=document.createElement("p");p.textContent=text;return p}));dialog.showModal();
 }
 const adminDialog=document.querySelector("#adminDialog");
-document.querySelector("#adminOpen")?.addEventListener("click",()=>{renderLocalArticles();adminDialog?.showModal()});
+const openAdmin=()=>{renderLocalArticles();adminDialog?.showModal()};
+document.querySelector("#adminOpen")?.addEventListener("click",openAdmin);
+document.querySelector("#adminOpenMobile")?.addEventListener("click",()=>{mainNav?.classList.remove("open");menuToggle?.setAttribute("aria-expanded","false");openAdmin()});
 document.querySelector("#adminClose")?.addEventListener("click",()=>adminDialog?.close());
 adminDialog?.addEventListener("click",event=>{if(event.target===adminDialog)adminDialog.close()});
 document.querySelector("#articleForm")?.addEventListener("submit",event=>{
