@@ -112,3 +112,43 @@ document.querySelector("#newsletterForm")?.addEventListener("submit", event => {
   message.classList.add("success-message");
   emailInput.value = "";
 });
+
+// Local content manager: browser-only storage, not a shared CMS.
+const LOCAL_ARTICLES_KEY = "nexus-local-articles-v1";
+function getLocalArticles(){try{return JSON.parse(localStorage.getItem(LOCAL_ARTICLES_KEY)||"[]")}catch{return []}}
+function saveLocalArticles(items){localStorage.setItem(LOCAL_ARTICLES_KEY,JSON.stringify(items))}
+function renderLocalArticles(){
+  const items=getLocalArticles();
+  const list=document.querySelector("#localArticleList");
+  if(list) list.replaceChildren(...(items.length?items.map(item=>{const row=document.createElement("div");row.className="local-article-row";const title=document.createElement("span");title.textContent=item.title;const remove=document.createElement("button");remove.type="button";remove.textContent="Eliminar";remove.addEventListener("click",()=>{saveLocalArticles(getLocalArticles().filter(x=>x.id!==item.id));renderLocalArticles();renderAllArticles()});row.append(title,remove);return row}):[Object.assign(document.createElement("p"),{textContent:"Todavía no has creado artículos en este navegador."})]));
+}
+function renderAllArticles(){
+  const grid=document.querySelector("#articleGrid"); if(!grid)return;
+  grid.querySelectorAll(".local-card").forEach(card=>card.remove());
+  getLocalArticles().forEach(item=>{
+    const card=document.createElement("article");card.className="feature-card local-card";card.dataset.category=item.category;card.dataset.search=(item.title+" "+item.summary).toLocaleLowerCase("es");
+    const visual=document.createElement("div");visual.className="card-visual visual-ai";const tag=document.createElement("div");tag.className="visual-tag";tag.textContent="NEXUS / COMUNIDAD";visual.append(tag);
+    const body=document.createElement("div");body.className="card-body";const meta=document.createElement("div");meta.className="card-meta";const cat=document.createElement("span");cat.textContent=item.category.toUpperCase();const time=document.createElement("span");time.textContent="LECTURA";meta.append(cat,time);
+    const heading=document.createElement("h3");heading.textContent=item.title;const summary=document.createElement("p");summary.textContent=item.summary;const read=document.createElement("button");read.className="text-link";read.type="button";read.textContent="Leer artículo ↗";read.addEventListener("click",()=>openLocalArticle(item));body.append(meta,heading,summary,read);card.append(visual,body);grid.append(card);
+  });
+  filterCards();
+}
+function openLocalArticle(item){
+  const dialog=document.querySelector("#articleDialog");if(!dialog)return;
+  document.querySelector("#dialogCategory").textContent=item.category.toUpperCase()+" / NEXUS COMMUNITY";
+  document.querySelector("#dialogTitle").textContent=item.title;
+  document.querySelector("#dialogLead").textContent=item.summary;
+  const target=document.querySelector("#dialogText");target.replaceChildren(...item.body.split(/\\n\\s*\\n/).filter(Boolean).map(text=>{const p=document.createElement("p");p.textContent=text;return p}));dialog.showModal();
+}
+const adminDialog=document.querySelector("#adminDialog");
+document.querySelector("#adminOpen")?.addEventListener("click",()=>{renderLocalArticles();adminDialog?.showModal()});
+document.querySelector("#adminClose")?.addEventListener("click",()=>adminDialog?.close());
+adminDialog?.addEventListener("click",event=>{if(event.target===adminDialog)adminDialog.close()});
+document.querySelector("#articleForm")?.addEventListener("submit",event=>{
+  event.preventDefault();const title=document.querySelector("#newTitle").value.trim();const category=document.querySelector("#newCategory").value;const summary=document.querySelector("#newSummary").value.trim();const body=document.querySelector("#newBody").value.trim();if(!title||!summary||!body)return;
+  const items=getLocalArticles();items.unshift({id:Date.now().toString(36),title,category,summary,body});saveLocalArticles(items);event.target.reset();renderLocalArticles();renderAllArticles();
+});
+document.querySelector("#clearLocalArticles")?.addEventListener("click",()=>{if(confirm("¿Eliminar todos los artículos guardados en este navegador?")){saveLocalArticles([]);renderLocalArticles();renderAllArticles()}});
+const ideaForm=document.querySelector("#ideaForm");
+ideaForm?.addEventListener("submit",event=>{event.preventDefault();const input=document.querySelector("#ideaInput");const msg=document.querySelector("#ideaMessage");const idea=input.value.trim();if(!idea)return;try{const ideas=JSON.parse(localStorage.getItem("nexus-ideas-v1")||"[]");ideas.push({idea,createdAt:new Date().toISOString()});localStorage.setItem("nexus-ideas-v1",JSON.stringify(ideas));msg.textContent="Sugerencia guardada en este navegador. Aún no se ha enviado al equipo NEXUS.";msg.classList.add("success-message");input.value=""}catch{msg.textContent="No se pudo guardar la sugerencia en este navegador."}});
+renderAllArticles();
