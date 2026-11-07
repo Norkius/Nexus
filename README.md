@@ -45,7 +45,7 @@ Se añadió la interfaz del asistente y un backend independiente para Cloudflare
 1. Desplegar la carpeta `nexus-ai-worker` como un Cloudflare Worker.
 2. Configurar el secreto `OPENAI_API_KEY` en el Worker (no compartirlo ni subirlo a GitHub).
 3. Configurar el origen permitido en `nexus-ai-worker/src/index.js` si cambia el dominio público.
-4. Copiar la URL pública del Worker y reemplazar la URL de ejemplo en la constante `NEXUS_AI_ENDPOINT` de `app.js`.
+4. Copiar la URL pública del Worker y pegar la URL del Worker en la constante `NEXUS_AI_ENDPOINT` de `app.js` (inicialmente está vacía).
 5. Publicar un artículo nuevo añadiendo un objeto a `catalog.json` y desplegar GitHub Pages. El asistente leerá el catálogo actualizado automáticamente.
 
 El panel de gestión actual sigue guardando borradores solo en el navegador. No publica contenido en el catálogo compartido; para publicar, edita `catalog.json` desde GitHub. El asistente no se activa hasta configurar y desplegar el Worker y añadir el secreto. Puede haber costes por uso de la API; establece límites y supervisa el consumo antes de compartirlo ampliamente.
