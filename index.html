@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NEXUS: tecnología, innovación e ideas para comprender el futuro.">
+  <meta name="theme-color" content="#080d18">
+  <title>NEXUS — Conectando ideas, creando futuro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="NEXUS, inicio">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>NEXUS<span class="brand-dot">.</span></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+        <a class="nav-link active" href="#inicio">Inicio</a>
+        <a class="nav-link" href="#explorar">Explorar</a>
+        <a class="nav-link" href="#sobre">Sobre NEXUS</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.64 5.64l1.42 1.42m9.88 9.88 1.42 1.42m0-12.72-1.42 1.42m-9.88 9.88-1.42 1.42"/><circle cx="12" cy="12" r="4"/></svg>
+        </button>
+        <a class="header-cta" href="#explorar">Descubrir <span>↗</span></a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="eyebrow"><span class="status-dot"></span> IDEAS EN MOVIMIENTO</div>
+          <h1>El futuro no se<br>espera. <span>Se crea.</span></h1>
+          <p class="hero-copy">Un espacio para explorar la tecnología, entender la innovación y descubrir las ideas que están transformando nuestro mundo.</p>
+          <div class="hero-buttons">
+            <a class="button button-primary" href="#explorar">Explorar contenido <span>↗</span></a>
+            <a class="button button-quiet" href="#sobre">Conoce NEXUS</a>
+          </div>
+          <div class="hero-note"><span class="note-line"></span> CONECTANDO IDEAS, CREANDO FUTURO</div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+          <div class="core"><div class="core-inner">N<span>.</span></div></div>
+          <div class="orbit-label label-top">INNOVACIÓN <i></i></div>
+          <div class="orbit-label label-bottom"><i></i> CONEXIÓN</div>
+          <div class="art-cross cross-one">+</div><div class="art-cross cross-two">+</div>
+        </div>
+        <div class="hero-index"><span>01</span><span class="index-rule"></span><span>03</span></div>
+      </section>
+
+      <section class="ticker" aria-label="Temas de NEXUS">
+        <div class="ticker-track"><span>TECNOLOGÍA</span><b>✳</b><span>INNOVACIÓN</span><b>✳</b><span>CIENCIA</span><b>✳</b><span>FUTURO DIGITAL</span><b>✳</b><span>TECNOLOGÍA</span><b>✳</b><span>INNOVACIÓN</span><b>✳</b></div>
+      </section>
+
+      <section class="content-section section-pad" id="explorar">
+        <div class="section-heading">
+          <div><div class="eyebrow muted-eyebrow">01 / EXPLORA</div><h2>Ideas que <span>mueven</span><br>el mundo.</h2></div>
+          <p>Contenido para mantenerte al día, aprender algo nuevo y mirar la tecnología desde otra perspectiva.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="filters" role="group" aria-label="Filtrar artículos">
+            <button class="filter-chip selected" data-category="Todos">Todo</button>
+            <button class="filter-chip" data-category="Tecnología">Tecnología</button>
+            <button class="filter-chip" data-category="Innovación">Innovación</button>
+            <button class="filter-chip" data-category="Ciencia">Ciencia</button>
+          </div>
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+            <input id="searchInput" type="search" placeholder="Buscar ideas..." aria-label="Buscar artículos">
+            <kbd>⌕</kbd>
+          </label>
+        </div>
+
+        <div class="featured-grid" id="articleGrid">
+          <article class="feature-card feature-large" data-category="Tecnología" data-search="inteligencia artificial herramientas vida cotidiana tecnología">
+            <div class="card-visual visual-ai"><div class="visual-tag">N.º 001 — TENDENCIAS</div><div class="ai-orb"><span></span><span></span><span></span></div><div class="visual-caption">AI / 2026</div></div>
+            <div class="card-body"><div class="card-meta"><span>TECNOLOGÍA</span><span>6 MIN DE LECTURA</span></div><h3>La inteligencia artificial está cambiando la forma de crear.</h3><p>Una mirada sencilla a cómo las nuevas herramientas están transformando el aprendizaje, el trabajo y la creatividad.</p><button class="text-link read-more" data-article="ai">Leer artículo <span>↗</span></button></div>
+          </article>
+          <article class="feature-card" data-category="Innovación" data-search="innovación ciudades inteligentes futuro sostenibilidad">
+            <div class="card-visual visual-city"><div class="city-sun"></div><div class="cityline"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="visual-caption">SMART / CITIES</div></div>
+            <div class="card-body"><div class="card-meta"><span>INNOVACIÓN</span><span>4 MIN</span></div><h3>Ciudades inteligentes: vivir mejor con tecnología.</h3><p>Cómo los datos y la conectividad pueden ayudar a construir espacios más eficientes.</p><button class="text-link read-more" data-article="cities">Leer artículo <span>↗</span></button></div>
+          </article>
+          <article class="feature-card" data-category="Ciencia" data-search="ciencia espacio exploración universo astronomía">
+            <div class="card-visual visual-space"><div class="space-planet"></div><div class="space-ring"></div><div class="visual-caption">BEYOND / EARTH</div></div>
+            <div class="card-body"><div class="card-meta"><span>CIENCIA</span><span>5 MIN</span></div><h3>Mirar al espacio también es mirar hacia el futuro.</h3><p>La exploración espacial impulsa descubrimientos que también mejoran nuestra vida en la Tierra.</p><button class="text-link read-more" data-article="space">Leer artículo <span>↗</span></button></div>
+          </article>
+        </div>
+        <p class="empty-state" id="emptyState" hidden>No encontramos resultados. Prueba con otra búsqueda.</p>
+      </section>
+
+      <section class="manifesto section-pad" id="sobre">
+        <div class="manifesto-mark">N<span>.</span></div>
+        <div class="manifesto-copy"><div class="eyebrow">02 / NUESTRA IDEA</div><h2>La tecnología conecta.<br><span>Las ideas transforman.</span></h2><p>NEXUS nace para acercar el conocimiento tecnológico a todos. Sin complicaciones: información clara, curiosidad y una mirada puesta en lo que viene.</p><a class="button button-outline" href="mailto:hola@nexus.example">Hablemos <span>↗</span></a></div>
+        <div class="manifesto-side"><span>UNA IDEA</span><span class="side-line"></span><span>UN MUNDO DE POSIBILIDADES</span></div>
+      </section>
+
+      <section class="newsletter section-pad">
+        <div><div class="eyebrow muted-eyebrow">03 / MANTENTE CONECTADO</div><h2>Las buenas ideas<br>siguen <span>avanzando.</span></h2></div>
+        <form class="newsletter-form" id="newsletterForm"><label for="emailInput">Recibe novedades de NEXUS</label><div class="email-row"><input id="emailInput" type="email" placeholder="Tu correo electrónico" required><button type="submit" aria-label="Suscribirme">↗</button></div><p id="formMessage" class="form-message">Suscripción demostrativa: no se enviarán datos a ningún servidor.</p></form>
+      </section>
+    </main>
+
+    <footer class="site-footer"><a class="brand" href="#inicio"><span class="brand-mark"><span></span><span></span><span></span></span><span>NEXUS<span class="brand-dot">.</span></span></a><p>Conectando ideas, creando futuro.</p><span class="footer-copy">© <span id="year"></span> NEXUS. Hecho para explorar.</span></footer>
+  </div>
+
+  <dialog class="article-dialog" id="articleDialog"><button class="dialog-close" id="dialogClose" aria-label="Cerrar">×</button><div class="dialog-content"><div class="eyebrow" id="dialogCategory">NEXUS / LECTURA</div><h2 id="dialogTitle"></h2><p id="dialogLead" class="dialog-lead"></p><div id="dialogText" class="dialog-text"></div><div class="dialog-foot">NEXUS <span>— CONECTANDO IDEAS, CREANDO FUTURO</span></div></div></dialog>
+</body>
+</html>
