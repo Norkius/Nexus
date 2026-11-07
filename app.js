@@ -157,7 +157,7 @@ renderAllArticles();
 
 
 // NEXUS AI catalog assistant. Set this after deploying the Cloudflare Worker.
-const NEXUS_AI_ENDPOINT = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+const NEXUS_AI_ENDPOINT = ""; // Pega aquí la URL del Worker cuando esté desplegado.
 const aiLauncher = document.querySelector("#nexusAiLauncher");
 const aiPanel = document.querySelector("#nexusAiPanel");
 const aiClose = document.querySelector("#nexusAiClose");
