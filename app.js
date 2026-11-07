@@ -154,4 +154,58 @@ document.querySelector("#clearLocalArticles")?.addEventListener("click",()=>{if(
 const ideaForm=document.querySelector("#ideaForm");
 ideaForm?.addEventListener("submit",event=>{event.preventDefault();const input=document.querySelector("#ideaInput");const msg=document.querySelector("#ideaMessage");const idea=input.value.trim();if(!idea)return;try{const ideas=JSON.parse(localStorage.getItem("nexus-ideas-v1")||"[]");ideas.push({idea,createdAt:new Date().toISOString()});localStorage.setItem("nexus-ideas-v1",JSON.stringify(ideas));msg.textContent="Sugerencia guardada en este navegador. Aún no se ha enviado al equipo NEXUS.";msg.classList.add("success-message");input.value=""}catch{msg.textContent="No se pudo guardar la sugerencia en este navegador."}});
 renderAllArticles();
-\n\n// NEXUS AI catalog assistant. Set this after deploying the Cloudflare Worker.\nconst NEXUS_AI_ENDPOINT = window.NEXUS_AI_ENDPOINT || "";\nconst aiLauncher = document.querySelector("#nexusAiLauncher");\nconst aiPanel = document.querySelector("#nexusAiPanel");\nconst aiClose = document.querySelector("#nexusAiClose");\nconst aiForm = document.querySelector("#nexusAiForm");\nconst aiInput = document.querySelector("#nexusAiInput");\nconst aiMessages = document.querySelector("#nexusAiMessages");\nfunction setAiOpen(open) {\n  if (!aiPanel || !aiLauncher) return;\n  aiPanel.hidden = !open;\n  aiLauncher.setAttribute("aria-expanded", String(open));\n  if (open) aiInput?.focus();\n}\nfunction addAiMessage(text, role) {\n  if (!aiMessages) return null;\n  const node = document.createElement("div");\n  node.className = "nexus-ai-message " + role;\n  node.textContent = text;\n  aiMessages.append(node);\n  aiMessages.scrollTop = aiMessages.scrollHeight;\n  return node;\n}\naiLauncher?.addEventListener("click", () => setAiOpen(aiPanel?.hidden));\naiClose?.addEventListener("click", () => setAiOpen(false));\ndocument.querySelectorAll("[data-ai-prompt]").forEach(button => button.addEventListener("click", () => {\n  if (aiInput) { aiInput.value = button.dataset.aiPrompt || ""; aiForm?.requestSubmit(); }\n}));\naiForm?.addEventListener("submit", async event => {\n  event.preventDefault();\n  const question = (aiInput?.value || "").trim();\n  if (!question) return;\n  addAiMessage(question, "user");\n  aiInput.value = "";\n  const pending = addAiMessage("Estoy consultando el catálogo...", "assistant pending");\n  const sendButton = aiForm.querySelector("button");\n  if (sendButton) sendButton.disabled = true;\n  try {\n    if (!NEXUS_AI_ENDPOINT) throw new Error("El asistente está diseñado, pero falta conectar su servicio seguro. Configura NEXUS_AI_ENDPOINT después de desplegar el backend.");\n    const response = await fetch(NEXUS_AI_ENDPOINT, {\n      method: "POST",\n      headers: { "Content-Type": "application/json" },\n      body: JSON.stringify({ question })\n    });\n    const data = await response.json().catch(() => ({}));\n    if (!response.ok) throw new Error(data.error || "No se pudo consultar NEXUS AI. Inténtalo de nuevo.");\n    if (pending) pending.textContent = data.answer || "No recibí una respuesta válida.";\n    if (pending) pending.classList.remove("pending");\n  } catch (error) {\n    if (pending) { pending.textContent = error.message || "Ocurrió un error al conectar con NEXUS AI."; pending.classList.remove("pending"); pending.classList.add("error"); }\n  } finally {\n    if (sendButton) sendButton.disabled = false;\n    aiInput?.focus();\n  }\n});\n
+\n\n// NEXUS AI catalog assistant. Set this after deploying the Cloudflare Worker.
+const NEXUS_AI_ENDPOINT = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+const aiLauncher = document.querySelector("#nexusAiLauncher");
+const aiPanel = document.querySelector("#nexusAiPanel");
+const aiClose = document.querySelector("#nexusAiClose");
+const aiForm = document.querySelector("#nexusAiForm");
+const aiInput = document.querySelector("#nexusAiInput");
+const aiMessages = document.querySelector("#nexusAiMessages");
+function setAiOpen(open) {
+  if (!aiPanel || !aiLauncher) return;
+  aiPanel.hidden = !open;
+  aiLauncher.setAttribute("aria-expanded", String(open));
+  if (open) aiInput?.focus();
+}
+function addAiMessage(text, role) {
+  if (!aiMessages) return null;
+  const node = document.createElement("div");
+  node.className = "nexus-ai-message " + role;
+  node.textContent = text;
+  aiMessages.append(node);
+  aiMessages.scrollTop = aiMessages.scrollHeight;
+  return node;
+}
+aiLauncher?.addEventListener("click", () => setAiOpen(aiPanel?.hidden));
+aiClose?.addEventListener("click", () => setAiOpen(false));
+document.querySelectorAll("[data-ai-prompt]").forEach(button => button.addEventListener("click", () => {
+  if (aiInput) { aiInput.value = button.dataset.aiPrompt || ""; aiForm?.requestSubmit(); }
+}));
+aiForm?.addEventListener("submit", async event => {
+  event.preventDefault();
+  const question = (aiInput?.value || "").trim();
+  if (!question) return;
+  addAiMessage(question, "user");
+  aiInput.value = "";
+  const pending = addAiMessage("Estoy consultando el catálogo...", "assistant pending");
+  const sendButton = aiForm.querySelector("button");
+  if (sendButton) sendButton.disabled = true;
+  try {
+    if (!NEXUS_AI_ENDPOINT) throw new Error("El asistente está diseñado, pero falta conectar su servicio seguro. Configura NEXUS_AI_ENDPOINT después de desplegar el backend.");
+    const response = await fetch(NEXUS_AI_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "No se pudo consultar NEXUS AI. Inténtalo de nuevo.");
+    if (pending) pending.textContent = data.answer || "No recibí una respuesta válida.";
+    if (pending) pending.classList.remove("pending");
+  } catch (error) {
+    if (pending) { pending.textContent = error.message || "Ocurrió un error al conectar con NEXUS AI."; pending.classList.remove("pending"); pending.classList.add("error"); }
+  } finally {
+    if (sendButton) sendButton.disabled = false;
+    aiInput?.focus();
+  }
+});
